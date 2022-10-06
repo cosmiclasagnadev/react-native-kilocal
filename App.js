@@ -4,7 +4,7 @@ import {NativeBaseProvider} from "native-base";
 import {NavigationContainer} from "@react-navigation/native";
 import {createNativeStackNavigator} from "@react-navigation/native-stack";
 
-import {LoginScreen, RegisterScreen, MainScreen} from "./screens";
+import {LoginScreen, RegisterScreen, MainScreen} from "./src/screens";
 import {
   UserContextProvider,
   useUser,
@@ -35,8 +35,8 @@ export default function App() {
               options={{headerShown: false}}
             />
             <Stack.Screen
-              name="Register"
-              component={RegisterScreen}
+              name="Main"
+              component={MainScreen}
               options={{headerShown: false}}
             />
           </Stack.Navigator>

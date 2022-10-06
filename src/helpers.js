@@ -32,3 +32,14 @@ export const validate = () => {
   }
   return true;
 };
+
+export const authFunction = async (type, email, password) => {
+  setLoading(type);
+  const {error, user} =
+    type === "LOGIN"
+      ? await supabase.auth.signIn({email, password})
+      : await supabase.auth.signUp({email, password});
+  if (!error && !user) Alert.alert("Check your email for the login link!");
+  if (error) Alert.alert(error.message);
+  setLoading("");
+};

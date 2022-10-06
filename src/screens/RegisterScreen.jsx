@@ -12,6 +12,7 @@ import {
   VStack,
   KeyboardAvoidingView,
 } from "native-base";
+import {authFunction} from "../helpers";
 
 import React from "react";
 
@@ -20,9 +21,12 @@ export default function RegisterScreen({navigation}) {
   const [errors, setErrors] = useState({});
 
   const handleSubmit = () => {
-    setErrors({});
-    console.log(formData);
-    validate() ? alert("Success") : console.log(JSON.stringify(errors));
+    // setErrors({});
+    // console.log(formData);
+    // validate()
+    //   ? authFunction("REGISTER", formData.email, formData.password)
+    //   : console.log(JSON.stringify(errors));
+    authFunction("REGISTER", formData.email, formData.password);
   };
 
   return (

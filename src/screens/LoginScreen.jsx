@@ -1,4 +1,4 @@
-import {View, Text} from "react-native";
+import {View, Text, Alert} from "react-native";
 import {
   Box,
   Heading,
@@ -9,9 +9,26 @@ import {
   Button,
   VStack,
 } from "native-base";
-import React from "react";
+import React, {useState, useEffect} from "react";
+// import {authFunction} from "../helpers";
+import {supabase} from "../supabase/initSupabase";
 
 export default function LoginScreen({navigation}) {
+  const [loading, setLoading] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const authFunction = async (type, email, password) => {
+    setLoading(type);
+    const {error, user} =
+      type === "LOGIN"
+        ? await supabase.auth.signIn({email, password})
+        : await supabase.auth.signUp({email, password});
+    if (!error && !user) Alert.alert("Check your email for the login link!");
+    if (error) Alert.alert(error.message);
+    setLoading("");
+  };
+
   return (
     <Box
       flex={1}
@@ -27,11 +44,21 @@ export default function LoginScreen({navigation}) {
         <FormControl w="75%" maxW="300px">
           <Stack>
             <FormControl.Label>Email</FormControl.Label>
-            <Input size="lg" type="email" placeholder="Enter your email" />
+            <Input
+              onChange={(text) => setEmail(text)}
+              size="lg"
+              type="email"
+              placeholder="Enter your email"
+            />
           </Stack>
           <Stack>
             <FormControl.Label>Password</FormControl.Label>
-            <Input size="lg" type="password" placeholder="Enter password" />
+            <Input
+              onChange={(text) => setPassword(text)}
+              size="lg"
+              type="password"
+              placeholder="Enter password"
+            />
           </Stack>
         </FormControl>
         <Button
@@ -41,12 +68,24 @@ export default function LoginScreen({navigation}) {
           width="75%"
           size="md"
           onPress={() => {
-            alert("Log In");
+            authFunction("LOGIN", email, password);
           }}
         >
           Log In
         </Button>
-        <Link
+        <Button
+          backgroundColor="primary.100"
+          _text={{color: "primary.300", fontWeight: "700"}}
+          _pressed={{bg: "primary.200"}}
+          width="75%"
+          size="md"
+          onPress={() => {
+            authFunction("REGISTER", email, password);
+          }}
+        >
+          Register
+        </Button>
+        {/* <Link
           _text={{color: "primary.100"}}
           _pressed={{color: "primary.300"}}
           onPress={() => {
@@ -54,7 +93,7 @@ export default function LoginScreen({navigation}) {
           }}
         >
           Don't have an account?
-        </Link>
+        </Link> */}
       </VStack>
     </Box>
   );

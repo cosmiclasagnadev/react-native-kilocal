@@ -1,4 +1,5 @@
-import React from "react";
+import React, {useEffect} from "react";
+import {supabase} from "../supabase/initSupabase";
 
 export const UserContext = React.createContext({
   user: null,
