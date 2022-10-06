@@ -17,7 +17,9 @@ import {supabase} from "../supabase/initSupabase";
 export default function LoginScreen({navigation}) {
   const [loading, setLoading] = useState("");
   const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [authMode, setAuthMode] = useState("login");
 
   const handleAuthFunction = async (type, email, password) => {
     setLoading(type);
@@ -30,6 +32,7 @@ export default function LoginScreen({navigation}) {
     if (error) {
       console.log(error);
       Alert.alert(error.message);
+      setLoading("");
     }
     setLoading("");
   };
@@ -49,6 +52,18 @@ export default function LoginScreen({navigation}) {
               kiLocal
             </Heading>
             <FormControl w="75%" maxW="300px">
+              {authMode === "login" ? null : (
+                <Stack>
+                  <FormControl.Label>Username</FormControl.Label>
+                  <Input
+                    value={username}
+                    onChangeText={(text) => setUsername(text)}
+                    size="lg"
+                    type="text"
+                    placeholder="Enter your username"
+                  />
+                </Stack>
+              )}
               <Stack>
                 <FormControl.Label>Email</FormControl.Label>
                 <Input
@@ -72,39 +87,50 @@ export default function LoginScreen({navigation}) {
                 />
               </Stack>
             </FormControl>
-            <Button
-              backgroundColor="primary.100"
-              _text={{color: "primary.300", fontWeight: "700"}}
-              _pressed={{bg: "primary.200"}}
-              width="75%"
-              size="md"
+            {authMode === "login" ? (
+              <Button
+                backgroundColor="primary.100"
+                _text={{color: "primary.300", fontWeight: "700"}}
+                _pressed={{bg: "primary.200"}}
+                width="75%"
+                size="md"
+                onPress={() => {
+                  handleAuthFunction("LOGIN", email, password);
+                }}
+              >
+                Log In
+              </Button>
+            ) : (
+              <Button
+                backgroundColor="primary.100"
+                _text={{color: "primary.300", fontWeight: "700"}}
+                _pressed={{bg: "primary.200"}}
+                width="75%"
+                size="md"
+                onPress={() => {
+                  handleAuthFunction("REGISTER", email, password);
+                }}
+              >
+                Register
+              </Button>
+            )}
+            <Link
+              _text={{color: "primary.100"}}
+              _pressed={{color: "primary.300"}}
               onPress={() => {
-                handleAuthFunction("LOGIN", email, password);
+                setAuthMode((prev) => {
+                  if (prev === "login") {
+                    return "register";
+                  } else {
+                    return "login";
+                  }
+                });
               }}
             >
-              Log In
-            </Button>
-            <Button
-              backgroundColor="primary.100"
-              _text={{color: "primary.300", fontWeight: "700"}}
-              _pressed={{bg: "primary.200"}}
-              width="75%"
-              size="md"
-              onPress={() => {
-                handleAuthFunction("REGISTER", email, password);
-              }}
-            >
-              Register
-            </Button>
-            {/* <Link
-            _text={{color: "primary.100"}}
-            _pressed={{color: "primary.300"}}
-            onPress={() => {
-              navigation.navigate("Register");
-            }}
-          >
-            Don't have an account?
-          </Link> */}
+              {authMode
+                ? "Already have an account? Log in"
+                : "Don't have an account? Register here"}
+            </Link>
           </>
         ) : (
           <Spinner color={"primary.100"} size="lg" />

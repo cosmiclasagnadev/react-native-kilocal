@@ -3,6 +3,7 @@ import {StyleSheet, Text, View} from "react-native";
 import {NativeBaseProvider} from "native-base";
 import {NavigationContainer} from "@react-navigation/native";
 import {createNativeStackNavigator} from "@react-navigation/native-stack";
+import "react-native-url-polyfill/auto";
 
 import {LoginScreen, RegisterScreen, MainScreen} from "./src/screens";
 import {
