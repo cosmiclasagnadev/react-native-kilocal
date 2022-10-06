@@ -18,7 +18,7 @@ export default function LoginScreen({navigation}) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const authFunction = async (type, email, password) => {
+  const handleAuthFunction = async (type, email, password) => {
     setLoading(type);
     const {error, user} =
       type === "LOGIN"
@@ -75,7 +75,7 @@ export default function LoginScreen({navigation}) {
           width="75%"
           size="md"
           onPress={() => {
-            authFunction("LOGIN", email, password);
+            handleAuthFunction("LOGIN", email, password);
           }}
         >
           Log In
@@ -87,7 +87,7 @@ export default function LoginScreen({navigation}) {
           width="75%"
           size="md"
           onPress={() => {
-            authFunction("REGISTER", email, password);
+            handleAuthFunction("REGISTER", email, password);
           }}
         >
           Register

@@ -13,16 +13,16 @@ import {
   KeyboardAvoidingView,
 } from "native-base";
 
+import {supabase} from "../supabase/initSupabase";
 import React from "react";
 
 export default function RegisterScreen({navigation}) {
   const [formData, setFormData] = useState({});
   const [errors, setErrors] = useState({});
 
-  const handleSubmit = () => {
-    setErrors({});
-    console.log(formData);
-    validate() ? alert("Success") : console.log(JSON.stringify(errors));
+  const handleSignOut = async () => {
+    const {error} = await supabase.auth.signOut();
+    if (error) Alert.alert(error.message);
   };
 
   return (
@@ -44,6 +44,16 @@ export default function RegisterScreen({navigation}) {
           <Heading size="2xl" color="white">
             Authenticated.
           </Heading>
+          <Button
+            backgroundColor="primary.100"
+            _text={{color: "primary.300", fontWeight: "700"}}
+            _pressed={{bg: "primary.200"}}
+            width="75%"
+            size="md"
+            onPress={handleSignOut}
+          >
+            Sign Out
+          </Button>
         </VStack>
       </Box>
     </KeyboardAvoidingView>
