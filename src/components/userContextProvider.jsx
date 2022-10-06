@@ -1,4 +1,4 @@
-import React, {useEffect} from "react";
+import React, {useEffect, useContext} from "react";
 import {supabase} from "../supabase/initSupabase";
 
 export const UserContext = React.createContext({
@@ -20,7 +20,7 @@ export const UserContextProvider = (props) => {
       setUser(session?.user ?? null);
     });
     return () => {
-      authListener.unsubscribe();
+      data.unsubscribe();
     };
   }, []);
 

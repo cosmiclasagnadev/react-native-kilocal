@@ -25,7 +25,10 @@ export default function LoginScreen({navigation}) {
         ? await supabase.auth.signIn({email, password})
         : await supabase.auth.signUp({email, password});
     if (!error && !user) Alert.alert("Check your email for the login link!");
-    if (error) Alert.alert(error.message);
+    if (error) {
+      console.log(error);
+      Alert.alert(error.message);
+    }
     setLoading("");
   };
 
@@ -45,7 +48,8 @@ export default function LoginScreen({navigation}) {
           <Stack>
             <FormControl.Label>Email</FormControl.Label>
             <Input
-              onChange={(text) => setEmail(text)}
+              value={email}
+              onChangeText={(text) => setEmail(text)}
               size="lg"
               type="email"
               placeholder="Enter your email"
@@ -54,7 +58,10 @@ export default function LoginScreen({navigation}) {
           <Stack>
             <FormControl.Label>Password</FormControl.Label>
             <Input
-              onChange={(text) => setPassword(text)}
+              value={password}
+              onChangeText={(text) => {
+                setPassword(text);
+              }}
               size="lg"
               type="password"
               placeholder="Enter password"

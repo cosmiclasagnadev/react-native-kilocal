@@ -22,7 +22,7 @@ export default function App() {
   return (
     <UserContextProvider>
       <NativeBaseProvider theme={theme}>
-        <NavigationContainer>
+        {/* <NavigationContainer>
           <Stack.Navigator>
             <Stack.Screen
               name="Login"
@@ -40,7 +40,8 @@ export default function App() {
               options={{headerShown: false}}
             />
           </Stack.Navigator>
-        </NavigationContainer>
+        </NavigationContainer> */}
+        <Container />
       </NativeBaseProvider>
     </UserContextProvider>
   );
