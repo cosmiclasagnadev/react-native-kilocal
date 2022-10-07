@@ -12,8 +12,6 @@ import {
 } from "./src/components/userContextProvider";
 import theme from "./theme";
 
-const Stack = createNativeStackNavigator();
-
 const Container = () => {
   const {user} = useUser();
   return user ? <MainScreen /> : <LoginScreen />;
@@ -23,25 +21,6 @@ export default function App() {
   return (
     <UserContextProvider>
       <NativeBaseProvider theme={theme}>
-        {/* <NavigationContainer>
-          <Stack.Navigator>
-            <Stack.Screen
-              name="Login"
-              component={LoginScreen}
-              options={{headerShown: false}}
-            />
-            <Stack.Screen
-              name="Register"
-              component={RegisterScreen}
-              options={{headerShown: false}}
-            />
-            <Stack.Screen
-              name="Main"
-              component={MainScreen}
-              options={{headerShown: false}}
-            />
-          </Stack.Navigator>
-        </NavigationContainer> */}
         <Container />
       </NativeBaseProvider>
     </UserContextProvider>
