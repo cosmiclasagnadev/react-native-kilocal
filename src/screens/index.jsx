@@ -3,6 +3,7 @@ import RegisterScreen from "./RegisterScreen";
 import MainScreen from "./MainScreen";
 import CreateHealthProfile from "./CreateHealthProfile";
 import HomeScreen from "./HomeScreen";
+import SplashScreen from "./SplashScreen";
 
 export {
   LoginScreen,
@@ -10,4 +11,5 @@ export {
   MainScreen,
   CreateHealthProfile,
   HomeScreen,
+  SplashScreen,
 };
