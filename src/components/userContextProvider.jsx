@@ -11,6 +11,7 @@ export const UserContextProvider = (props) => {
   const [session, setSession] = React.useState(null);
   const [user, setUser] = React.useState(null);
   const [healthProfile, setHealthProfile] = React.useState(null);
+  const [refreshFromCreateProfileScreen, setRefresh] = React.useState(false);
 
   useEffect(() => {
     const session = supabase.auth.session();
@@ -29,7 +30,6 @@ export const UserContextProvider = (props) => {
   useEffect(() => {
     const fetchHealthProfile = async () => {
       const {id} = session?.user;
-      console.log("USER ID: ", id);
       const {data, error} = await supabase
         .from("healthProfiles")
         .select()
@@ -48,12 +48,13 @@ export const UserContextProvider = (props) => {
     };
 
     fetchHealthProfile();
-  }, [session]);
+  }, [session, refreshFromCreateProfileScreen]);
 
   const value = {
     session,
     user,
     healthProfile,
+    setRefresh,
   };
 
   return <UserContext.Provider value={value} {...props} />;

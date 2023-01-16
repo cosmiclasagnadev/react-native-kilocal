@@ -19,10 +19,12 @@ const Container = () => {
 
 export default function App() {
   return (
-    <UserContextProvider>
-      <NativeBaseProvider theme={theme}>
-        <Container />
-      </NativeBaseProvider>
-    </UserContextProvider>
+    <NavigationContainer>
+      <UserContextProvider>
+        <NativeBaseProvider theme={theme}>
+          <Container />
+        </NativeBaseProvider>
+      </UserContextProvider>
+    </NavigationContainer>
   );
 }
