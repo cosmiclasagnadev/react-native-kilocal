@@ -63,7 +63,7 @@ const HomeScreen = () => {
               <Avatar
                 bg="primary.400"
                 source={{
-                  uri: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80",
+                  uri: "https://avatars.githubusercontent.com/u/28593720?v=4",
                 }}
               >
                 AP
@@ -143,7 +143,7 @@ const HomeScreen = () => {
             alignItems="center"
             mt={4}
           >
-            <Heading color="white">Your entries</Heading>
+            <Heading color="white">Meal log</Heading>
             <AddIcon size="md" color="white" />
           </Flex>
           <ScrollView width="100%" height="96">
@@ -154,7 +154,7 @@ const HomeScreen = () => {
                   rounded="xl"
                   resizeMode="cover"
                   source={{
-                    uri: "https://wallpaperaccess.com/full/317501.jpg",
+                    uri: "https://cdn.apartmenttherapy.info/image/upload/f_jpg,q_auto:eco,c_fill,g_auto,w_1500,ar_4:3/k%2FEdit%2F2022-10-Chicken-Adobo%2FChicken_Adobo",
                   }}
                   alt="chicken adobo"
                 />
@@ -162,7 +162,97 @@ const HomeScreen = () => {
                   <Heading size="md" color="primary.500">
                     10:00 AM Meal
                   </Heading>
-                  <Text flexWrap={1}>Chicken Adobo with 2 ...</Text>
+                  <Text>Chicken Adobo with 2 ...</Text>
+                  <Text fontSize="lg" fontWeight={700}>
+                    200{" "}
+                    <Text fontSize="md" fontWeight={300}>
+                      cal
+                    </Text>
+                  </Text>
+                  <Flex flexDirection="row" mt={2}>
+                    <Box mr={5}>
+                      <Text fontSize="sm" fontWeight={700}>
+                        8g
+                      </Text>
+                      <Text fontSize="xs">Carbs</Text>
+                    </Box>
+                    <Box mr={5}>
+                      <Text fontSize="sm" fontWeight={700}>
+                        3g
+                      </Text>
+                      <Text fontSize="xs">Protein</Text>
+                    </Box>
+                    <Box mr={5}>
+                      <Text fontSize="sm" fontWeight={700}>
+                        10g
+                      </Text>
+                      <Text fontSize="xs">Fat</Text>
+                    </Box>
+                  </Flex>
+                </VStack>
+              </Flex>
+            </Box>
+            <Box bgColor="primary.200" p={5} rounded="xl" mb={3}>
+              <Flex flexDirection="row">
+                <Image
+                  size="xl"
+                  rounded="xl"
+                  resizeMode="cover"
+                  source={{
+                    uri: "https://cdn.apartmenttherapy.info/image/upload/f_jpg,q_auto:eco,c_fill,g_auto,w_1500,ar_4:3/k%2FEdit%2F2022-10-Chicken-Adobo%2FChicken_Adobo",
+                  }}
+                  alt="chicken adobo"
+                />
+                <VStack ml={4} space={0}>
+                  <Heading size="md" color="primary.500">
+                    10:00 AM Meal
+                  </Heading>
+                  <Text>Chicken Adobo with 2 ...</Text>
+                  <Text fontSize="lg" fontWeight={700}>
+                    200{" "}
+                    <Text fontSize="md" fontWeight={300}>
+                      cal
+                    </Text>
+                  </Text>
+                  <Flex flexDirection="row" mt={2}>
+                    <Box mr={5}>
+                      <Text fontSize="sm" fontWeight={700}>
+                        8g
+                      </Text>
+                      <Text fontSize="xs">Carbs</Text>
+                    </Box>
+                    <Box mr={5}>
+                      <Text fontSize="sm" fontWeight={700}>
+                        3g
+                      </Text>
+                      <Text fontSize="xs">Protein</Text>
+                    </Box>
+                    <Box mr={5}>
+                      <Text fontSize="sm" fontWeight={700}>
+                        10g
+                      </Text>
+                      <Text fontSize="xs">Fat</Text>
+                    </Box>
+                  </Flex>
+                </VStack>
+              </Flex>
+            </Box>
+            <Box bgColor="primary.200" p={5} rounded="xl" mb={3}>
+              <Flex flexDirection="row">
+                <Image
+                  size="xl"
+                  rounded="xl"
+                  resizeMode="cover"
+                  source={{
+                    uri: "https://cdn.apartmenttherapy.info/image/upload/f_jpg,q_auto:eco,c_fill,g_auto,w_1500,ar_4:3/k%2FEdit%2F2022-10-Chicken-Adobo%2FChicken_Adobo",
+                  }}
+                  alt="chicken adobo"
+                />
+                <VStack ml={4} space={0}>
+                  <Heading size="md" color="primary.500">
+                    10:00 AM Meal
+                  </Heading>
+                  <Text>Chicken Adobo with 2 ...</Text>
                   <Text fontSize="lg" fontWeight={700}>
                     200{" "}
                     <Text fontSize="md" fontWeight={300}>
