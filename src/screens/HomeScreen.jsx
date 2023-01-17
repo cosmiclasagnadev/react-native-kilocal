@@ -1,34 +1,51 @@
 import React from "react";
 import {
-  Box,
   Text,
-  Heading,
-  Image,
-  Input,
-  Progress,
-  Stack,
-  Link,
   Center,
   Icon,
-  MaterialCommunityIcons,
-  MaterialIcons,
-  Avatar,
-  VStack,
-  Flex,
-  Spacer,
-  KeyboardAvoidingView,
   HStack,
   Pressable,
-  AddIcon,
-  ScrollView,
+  Heading,
+  Box,
+  VStack,
 } from "native-base";
 import {AntDesign, Entypo} from "@expo/vector-icons";
 import {supabase} from "../supabase/initSupabase";
 import {useUser} from "../components/userContextProvider";
+import HomeComponent from "../components/homeComponent";
+import OptionsScreen from "../components/optionsComponent";
+
+const truncateLongText = (text, length) => {
+  if (text.length > length) {
+    return text.substring(0, length) + " ...";
+  }
+  return text;
+};
+
+const renderNav = (props) => {
+  const {selected, handleSignOut} = props;
+  switch (selected) {
+    case 0: {
+      return <HomeComponent handleSignOut={handleSignOut} />;
+    }
+    case 1: {
+      return (
+        <Box flex={1} justifyContent="start" bgColor="primary.300" safeArea>
+          <VStack width="100%" space="2.5" mt="4" px={5}>
+            <Heading>Logs Screen</Heading>
+          </VStack>
+        </Box>
+      );
+    }
+    case 2: {
+      return <OptionsScreen handleSignOut={handleSignOut} />;
+    }
+  }
+};
 
 const HomeScreen = () => {
   const {user, setRefresh, session} = useUser();
-  const [selected, setSelected] = React.useState(1);
+  const [selected, setSelected] = React.useState(0);
   const handleSignOut = async () => {
     const {error} = await supabase.auth.signOut();
     if (error) Alert.alert(error.message);
@@ -37,23 +54,9 @@ const HomeScreen = () => {
 
   return (
     <>
-      <Box flex={1} justifyContent="start" bgColor="primary.300" safeArea>
+      {/* <Box flex={1} justifyContent="start" bgColor="primary.300" safeArea>
         <VStack width="100%" space="2.5" mt="4" px={5}>
-          {/* <Heading size="2xl" color="white">
-          Home Screen
-        </Heading>
-        <Button
-          backgroundColor="primary.100"
-          _text={{color: "primary.300", fontWeight: "700"}}
-          _pressed={{bg: "primary.200"}}
-          width="75%"
-          size="md"
-          onPress={handleSignOut}
-        >
-          Sign Out
-        </Button> */}
           <Flex
-            // bgColor="amber.100"
             minWidth="100%"
             justifyContent="flex-start"
             flexDirection="row"
@@ -162,7 +165,9 @@ const HomeScreen = () => {
                   <Heading size="md" color="primary.500">
                     10:00 AM Meal
                   </Heading>
-                  <Text>Chicken Adobo with 2 ...</Text>
+                  <Text>
+                    {truncateLongText("Chicken adobo with 2 bananas", 20)}
+                  </Text>
                   <Text fontSize="lg" fontWeight={700}>
                     200{" "}
                     <Text fontSize="md" fontWeight={300}>
@@ -283,59 +288,9 @@ const HomeScreen = () => {
               </Flex>
             </Box>
           </ScrollView>
-          {/* <Box bgColor="primary.100" p={5} rounded="xl" mt={2}>
-          <Heading size="sm" color="primary.500" mb={2}>
-            Macronutrients
-          </Heading>
-          <Flex flexDirection="row">
-            <Box bgColor="primary.200" p={3} rounded="lg" width="33%">
-              <Heading>
-                150 <Text>g</Text>
-              </Heading>
-              <Text fontSize="sm" mb={1}>
-                Carbs
-              </Text>
-              <Progress
-                size="md"
-                bg="primary.100"
-                _filledTrack={{bg: "primary.300"}}
-                value={80}
-              />
-            </Box>
-            <Spacer />
-            <Box bgColor="primary.200" p={3} rounded="lg" width="33%">
-              <Heading>
-                60 <Text>g</Text>
-              </Heading>
-              <Text fontSize="sm" mb={1}>
-                Protein
-              </Text>
-              <Progress
-                size="md"
-                bg="primary.100"
-                _filledTrack={{bg: "primary.300"}}
-                value={66}
-              />
-            </Box>
-            <Spacer />
-            <Box bgColor="primary.200" p={3} rounded="lg" width="33%">
-              <Heading>
-                32 <Text>g</Text>
-              </Heading>
-              <Text fontSize="sm" mb={1}>
-                Fat
-              </Text>
-              <Progress
-                size="md"
-                bg="primary.100"
-                _filledTrack={{bg: "primary.300"}}
-                value={26}
-              />
-            </Box>
-          </Flex>
-        </Box> */}
         </VStack>
-      </Box>
+      </Box> */}
+      {renderNav({selected, handleSignOut})}
       <HStack bg="primary.400" alignItems="center" safeAreaBottom>
         <Pressable
           opacity={selected === 0 ? 1 : 0.5}
