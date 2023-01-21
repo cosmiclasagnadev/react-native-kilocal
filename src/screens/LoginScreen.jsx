@@ -20,17 +20,28 @@ export default function LoginScreen({navigation}) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [authMode, setAuthMode] = useState("login");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
 
   const handleAuthFunction = async (type, email, password) => {
     setLoading(type);
     const {error, user, session} =
       type === "LOGIN"
         ? await supabase.auth.signIn({email, password})
-        : await supabase.auth.signUp({email, password});
+        : await supabase.auth.signUp({
+            email,
+            password,
+            options: {
+              data: {
+                first_name: firstName,
+                last_name: lastName,
+                username,
+              },
+            },
+          });
     if (!error && user && !session)
       Alert.alert("Check your email for the login link!");
     if (error) {
-      console.log(error);
       Alert.alert(error.message);
       setLoading("");
     }
@@ -53,16 +64,34 @@ export default function LoginScreen({navigation}) {
             </Heading>
             <FormControl w="75%" maxW="300px">
               {authMode === "login" ? null : (
-                <Stack>
-                  <FormControl.Label>Username</FormControl.Label>
-                  <Input
-                    value={username}
-                    onChangeText={(text) => setUsername(text)}
-                    size="lg"
-                    type="text"
-                    placeholder="Enter your username"
-                  />
-                </Stack>
+                <>
+                  <Stack>
+                    <FormControl.Label>Username</FormControl.Label>
+                    <Input
+                      value={username}
+                      onChangeText={(text) => setUsername(text)}
+                      size="lg"
+                      type="text"
+                      placeholder="Enter your username"
+                    />
+                    <FormControl.Label>First Name</FormControl.Label>
+                    <Input
+                      value={firstName}
+                      onChangeText={(text) => setFirstName(text)}
+                      size="lg"
+                      type="text"
+                      placeholder="Enter your first name"
+                    />
+                    <FormControl.Label>Last Name</FormControl.Label>
+                    <Input
+                      value={lastName}
+                      onChangeText={(text) => setLastName(text)}
+                      size="lg"
+                      type="text"
+                      placeholder="Enter your last name"
+                    />
+                  </Stack>
+                </>
               )}
               <Stack>
                 <FormControl.Label>Email</FormControl.Label>
@@ -72,6 +101,7 @@ export default function LoginScreen({navigation}) {
                   size="lg"
                   type="email"
                   placeholder="Enter your email"
+                  required
                 />
               </Stack>
               <Stack>
@@ -84,6 +114,7 @@ export default function LoginScreen({navigation}) {
                   size="lg"
                   type="password"
                   placeholder="Enter password"
+                  required
                 />
               </Stack>
             </FormControl>
@@ -127,7 +158,7 @@ export default function LoginScreen({navigation}) {
                 });
               }}
             >
-              {authMode
+              {authMode === "register"
                 ? "Already have an account? Log in"
                 : "Don't have an account? Register here"}
             </Link>

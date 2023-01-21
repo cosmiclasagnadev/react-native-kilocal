@@ -12,23 +12,23 @@ export const UserContextProvider = (props) => {
   const [user, setUser] = React.useState(null);
   const [healthProfile, setHealthProfile] = React.useState(null);
   const [refreshFromCreateProfileScreen, setRefresh] = React.useState(false);
+  const [isLoading, setIsLoading] = React.useState(false);
 
   useEffect(() => {
+    setIsLoading(true);
     const session = supabase.auth.session();
     setSession(session);
     setUser(session?.user ?? null);
     const {data} = supabase.auth.onAuthStateChange((event, session) => {
-      console.log(`Supabase auth event: ${event}`);
       setSession(session);
       setUser(session?.user ?? null);
     });
-    return () => {
-      data.unsubscribe();
-    };
+    setIsLoading(false);
   }, []);
 
   useEffect(() => {
     const fetchHealthProfile = async () => {
+      setIsLoading(true);
       const {id} = session?.user;
       const {data, error} = await supabase
         .from("healthProfiles")
@@ -39,12 +39,11 @@ export const UserContextProvider = (props) => {
         Alert.alert(error.message);
       }
       if (data.length > 0) {
-        console.log("health profile exists");
         setHealthProfile(data[0]);
       } else {
-        console.log("no health profile");
         setHealthProfile(null);
       }
+      setIsLoading(false);
     };
 
     fetchHealthProfile();
@@ -55,6 +54,7 @@ export const UserContextProvider = (props) => {
     user,
     healthProfile,
     setRefresh,
+    isLoading,
   };
 
   return <UserContext.Provider value={value} {...props} />;

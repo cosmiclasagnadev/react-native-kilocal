@@ -46,7 +46,7 @@ function useDebounce(value, delay) {
 }
 
 const CreateHealthProfile = () => {
-  const {user, healthProfile, setRefresh} = useUser();
+  const {user, healthProfile, setRefresh, isLoading} = useUser();
   const [height, setHeight] = useState("");
   const [weight, setWeight] = useState("");
   const [lifestyle, setLifestyle] = useState("");
@@ -67,12 +67,6 @@ const CreateHealthProfile = () => {
     }
   }, [debouncedHeightInput]);
 
-  const handleSignOut = async () => {
-    const {error} = await supabase.auth.signOut();
-    if (error) Alert.alert(error.message);
-    setRefresh(false);
-  };
-
   const handleCreateHealthProfile = async () => {
     const {error, data} = await supabase
       .from("healthProfiles")
@@ -86,7 +80,6 @@ const CreateHealthProfile = () => {
         },
       ])
       .select();
-    console.log(data);
     if (error) {
       Alert.alert(error.message);
     }
@@ -103,86 +96,93 @@ const CreateHealthProfile = () => {
       safeArea
     >
       <VStack width="100%" alignItems="start" space="2.5" mt="4">
-        <Heading size="xl" color="white">
-          Create Health Profile
-        </Heading>
-        <Text fontSize="xl" style={{color: "white"}}>
-          Please fill out the following information to create your health
-          profile and start on your journey to a healthier you!
-        </Text>
-        <FormControl w="100%">
-          <Stack>
-            <FormControl.Label>Height</FormControl.Label>
-            <Input
-              value={height}
-              onChangeText={(text) => setHeight(text)}
-              size="lg"
-              type="number"
-              placeholder="Enter your height (in cm)"
-            />
-          </Stack>
-          <Stack>
-            <FormControl.Label>Weight</FormControl.Label>
-            <Input
-              value={weight}
-              onChangeText={(text) => {
-                setWeight(text);
+        {isLoading ? (
+          <Spinner color={"primary.100"} size="lg" />
+        ) : (
+          <>
+            <Heading size="xl" color="white">
+              Create Health Profile
+            </Heading>
+            <Text fontSize="xl" style={{color: "white"}}>
+              Please fill out the following information to create your health
+              profile and start on your journey to a healthier you!
+            </Text>
+            <FormControl w="100%">
+              <Stack>
+                <FormControl.Label>Height</FormControl.Label>
+                <Input
+                  value={height}
+                  onChangeText={(text) => setHeight(text)}
+                  size="lg"
+                  type="number"
+                  placeholder="Enter your height (in cm)"
+                />
+              </Stack>
+              <Stack>
+                <FormControl.Label>Weight</FormControl.Label>
+                <Input
+                  value={weight}
+                  onChangeText={(text) => {
+                    setWeight(text);
+                  }}
+                  size="lg"
+                  type="number"
+                  placeholder="Enter your weight (in kg)"
+                />
+              </Stack>
+              <Stack>
+                <FormControl.Label>Describe your lifestyle</FormControl.Label>
+                <Select
+                  size="lg"
+                  placeholder="Lifestyle"
+                  dropdownIcon={
+                    <ChevronDownIcon size={3} m={2} color="white" />
+                  }
+                  onValueChange={(itemValue) => setLifestyle(itemValue)}
+                  required
+                >
+                  <Select.Item label="Sedentary" value="sedentary" />
+                  <Select.Item label="Light" value="light" />
+                  <Select.Item label="Moderate" value="moderate" />
+                  <Select.Item label="Very Active" value="active" />
+                </Select>
+              </Stack>
+              {height > 60 && height < 245 && (
+                <Stack mt={5}>
+                  <Heading color="white">Your ideal weight is</Heading>
+                  <Heading size="2xl" color="white">
+                    {formattedIdealWeightString}
+                  </Heading>
+                  <Text style={{color: "white", marginTop: 8}}>
+                    Your ideal weight is what you should target as your
+                    desirable body weight.
+                  </Text>
+                  <Input
+                    mt={3}
+                    value={userGoalWeight}
+                    onChangeText={(text) => setUserGoalWeight(text)}
+                    size="lg"
+                    type="number"
+                    placeholder="Enter your goal weight (in kg)"
+                  />
+                </Stack>
+              )}
+            </FormControl>
+            <Button
+              backgroundColor="primary.100"
+              _text={{color: "primary.300", fontWeight: "700"}}
+              _pressed={{bg: "primary.200"}}
+              // width="75%"
+              size="md"
+              mt={5}
+              onPress={() => {
+                handleCreateHealthProfile();
               }}
-              size="lg"
-              type="number"
-              placeholder="Enter your weight (in kg)"
-            />
-          </Stack>
-          <Stack>
-            <FormControl.Label>Describe your lifestyle</FormControl.Label>
-            <Select
-              size="lg"
-              placeholder="Lifestyle"
-              dropdownIcon={<ChevronDownIcon size={3} m={2} color="white" />}
-              onValueChange={(itemValue) => setLifestyle(itemValue)}
+              endIcon={<ChevronRightIcon color="primary.300" size={3} />}
             >
-              <Select.Item label="Sedentary" value="sedentary" />
-              <Select.Item label="Light" value="light" />
-              <Select.Item label="Moderate" value="moderate" />
-              <Select.Item label="Very Active" value="active" />
-            </Select>
-          </Stack>
-          {height > 60 && height < 245 && (
-            <Stack mt={5}>
-              <Heading color="white">Your ideal weight is</Heading>
-              <Heading size="2xl" color="white">
-                {formattedIdealWeightString}
-              </Heading>
-              <Text style={{color: "white", marginTop: 8}}>
-                Your ideal weight is what you should target as your desirable
-                body weight.
-              </Text>
-              <Input
-                mt={3}
-                value={userGoalWeight}
-                onChangeText={(text) => setUserGoalWeight(text)}
-                size="lg"
-                type="number"
-                placeholder="Enter your goal weight (in kg)"
-              />
-            </Stack>
-          )}
-        </FormControl>
-        <Button
-          backgroundColor="primary.100"
-          _text={{color: "primary.300", fontWeight: "700"}}
-          _pressed={{bg: "primary.200"}}
-          // width="75%"
-          size="md"
-          mt={5}
-          onPress={() => {
-            handleCreateHealthProfile();
-          }}
-          endIcon={<ChevronRightIcon color="primary.300" size={3} />}
-        >
-          Continue
-        </Button>
-        {/* <Button
+              Continue
+            </Button>
+            {/* <Button
           backgroundColor="primary.100"
           _text={{color: "primary.300", fontWeight: "700"}}
           _pressed={{bg: "primary.200"}}
@@ -192,6 +192,8 @@ const CreateHealthProfile = () => {
         >
           Sign Out
         </Button> */}
+          </>
+        )}
       </VStack>
     </Box>
   );

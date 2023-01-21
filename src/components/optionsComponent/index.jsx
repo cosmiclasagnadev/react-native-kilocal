@@ -37,7 +37,8 @@ const OptionsScreen = (props) => {
           mb={0}
           mt={3}
         >
-          Allen Ponce de Leon
+          {user?.user?.user_metadata.firstName}{" "}
+          {user?.user?.user_metadata.lastName}
           {/* Should have full name here */}
         </Heading>
         <Heading size="sm" color="primary.200" mb={2}>
