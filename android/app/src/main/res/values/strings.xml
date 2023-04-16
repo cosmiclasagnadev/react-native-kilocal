@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">kilocal-native</string>
+    <string name="title_activity_main">kilocal-native</string>
+    <string name="package_name">com.kilocal.app</string>
+    <string name="custom_url_scheme">com.kilocal.app</string>
+</resources>
