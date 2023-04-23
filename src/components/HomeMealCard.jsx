@@ -16,31 +16,32 @@ export const HomeMealCard = ({
   protein,
   fat,
   timestamp,
+  uri,
 }) => {
   return (
     <Box bgColor="primary.200" p={5} rounded="xl" mb={3}>
       <Flex flexDirection="row">
-        {/* <Image
-          size="xl"
-          rounded="xl"
+        <Image
+          size="md"
+          rounded="md"
           resizeMode="cover"
-          source={{
-            uri: "https://cdn.apartmenttherapy.info/image/upload/f_jpg,q_auto:eco,c_fill,g_auto,w_1500,ar_4:3/k%2FEdit%2F2022-10-Chicken-Adobo%2FChicken_Adobo",
-          }}
+          fallbackSource={require("./img/placeholder.png")}
+          src={uri}
           alt="chicken adobo"
-        /> */}
+        />
         <VStack ml={4} space={0}>
           <Heading size="md" color="primary.500">
             Meal @ {moment(timestamp).format("LT")}
           </Heading>
           <Text>{truncateLongText(name, 20)}</Text>
-          <Text fontSize="lg" fontWeight={700}>
-            {calories}
-            <Text fontSize="md" fontWeight={300}>
-              cal
-            </Text>
-          </Text>
-          <Flex flexDirection="row" mt={2}>
+
+          <Flex flexDirection="row" alignItems="flex-end" mt={2}>
+            <Box mr={5}>
+              <Text fontSize="lg" fontWeight={700}>
+                {calories}g
+              </Text>
+              <Text fontSize="xs">Calories</Text>
+            </Box>
             <Box mr={5}>
               <Text fontSize="sm" fontWeight={700}>
                 {carbs}g
