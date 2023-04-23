@@ -45,7 +45,7 @@ function useDebounce(value, delay) {
   return debouncedValue;
 }
 
-const CreateHealthProfile = () => {
+const CreateHealthProfile = ({navigation}) => {
   const {user, healthProfile, setRefresh, isLoading} = useUser();
   const [height, setHeight] = useState("");
   const [weight, setWeight] = useState("");
@@ -86,10 +86,22 @@ const CreateHealthProfile = () => {
     setRefresh(true);
   };
 
+  const proceedToConfirm = () => {
+    navigation.navigate("ConfirmStatsScreen", {
+      height,
+      weight,
+      lifestyle,
+      idealWeight,
+      userGoalWeight,
+      formattedIdealWeightString,
+      handleCreateHealthProfile,
+    });
+  };
+
   return (
     <Box
       flex={1}
-      justifyContent="start"
+      justifyContent="center"
       alignItems="start"
       bgColor="primary.300"
       px="5"
@@ -176,22 +188,12 @@ const CreateHealthProfile = () => {
               size="md"
               mt={5}
               onPress={() => {
-                handleCreateHealthProfile();
+                proceedToConfirm();
               }}
               endIcon={<ChevronRightIcon color="primary.300" size={3} />}
             >
               Continue
             </Button>
-            {/* <Button
-          backgroundColor="primary.100"
-          _text={{color: "primary.300", fontWeight: "700"}}
-          _pressed={{bg: "primary.200"}}
-          width="75%"
-          size="md"
-          onPress={handleSignOut}
-        >
-          Sign Out
-        </Button> */}
           </>
         )}
       </VStack>

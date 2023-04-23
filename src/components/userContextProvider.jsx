@@ -30,6 +30,7 @@ export const UserContextProvider = (props) => {
     const fetchHealthProfile = async () => {
       setIsLoading(true);
       const {id} = session?.user;
+      console.log(session);
       const {data, error} = await supabase
         .from("healthProfiles")
         .select()
