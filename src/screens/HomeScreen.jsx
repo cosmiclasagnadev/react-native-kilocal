@@ -12,8 +12,8 @@ import {
 import {AntDesign, Entypo} from "@expo/vector-icons";
 import {supabase} from "../supabase/initSupabase";
 import {useUser} from "../components/userContextProvider";
-import HomeComponent from "../components/homeComponent";
-import OptionsScreen from "../components/optionsComponent";
+import HomeComponent from "../components/HomeComponent";
+import OptionsComponent from "../components/OptionsComponent";
 
 const truncateLongText = (text, length) => {
   if (text.length > length) {
@@ -23,10 +23,12 @@ const truncateLongText = (text, length) => {
 };
 
 const renderNav = (props) => {
-  const {selected, handleSignOut} = props;
+  const {selected, handleSignOut, navigation} = props;
   switch (selected) {
     case 0: {
-      return <HomeComponent handleSignOut={handleSignOut} />;
+      return (
+        <HomeComponent navigation={navigation} handleSignOut={handleSignOut} />
+      );
     }
     case 1: {
       return (
@@ -38,12 +40,12 @@ const renderNav = (props) => {
       );
     }
     case 2: {
-      return <OptionsScreen handleSignOut={handleSignOut} />;
+      return <OptionsComponent handleSignOut={handleSignOut} />;
     }
   }
 };
 
-const HomeScreen = () => {
+const HomeScreen = ({navigation}) => {
   const {user, setRefresh, session, handleSignOut} = useUser();
   const [selected, setSelected] = React.useState(0);
 
@@ -285,7 +287,7 @@ const HomeScreen = () => {
           </ScrollView>
         </VStack>
       </Box> */}
-      {renderNav({selected, handleSignOut})}
+      {renderNav({selected, handleSignOut, navigation})}
       <HStack bg="primary.400" alignItems="center" safeAreaBottom>
         <Pressable
           opacity={selected === 0 ? 1 : 0.5}

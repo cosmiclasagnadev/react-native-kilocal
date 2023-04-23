@@ -12,10 +12,10 @@ import {
   Icon,
   Button,
 } from "native-base";
-import {useUser} from "../userContextProvider";
+import {useUser} from "./userContextProvider";
 import {AntDesign} from "@expo/vector-icons";
 
-const OptionsScreen = (props) => {
+const OptionsComponent = (props) => {
   const user = useUser();
   const {handleSignOut} = props;
   return (
@@ -105,4 +105,4 @@ const OptionsScreen = (props) => {
   );
 };
 
-export default OptionsScreen;
+export default OptionsComponent;

@@ -13,7 +13,16 @@ export const UserContextProvider = (props) => {
   const [healthProfile, setHealthProfile] = React.useState(null);
   const [refreshFromCreateProfileScreen, setRefresh] = React.useState(false);
   const [isLoading, setIsLoading] = React.useState(false);
-  const [healthStatsToday, setHealthStatsToday] = React.useState(null);
+  // const [healthStatsToday, setHealthStatsToday] = React.useState(null);
+  // temporrary for now
+  const [healthStatsToday, setHealthStatsToday] = React.useState({
+    kcalToday: 0,
+    carbsToday: 0,
+    proteinToday: 0,
+    fatsToday: 0,
+  });
+
+  const [mealsToday, setMealsToday] = React.useState([]);
 
   useEffect(() => {
     setIsLoading(true);
@@ -31,7 +40,6 @@ export const UserContextProvider = (props) => {
     const fetchHealthProfile = async () => {
       setIsLoading(true);
       const {id} = session?.user;
-      console.log(session);
       const {data, error} = await supabase
         .from("healthProfiles")
         .select()
@@ -57,6 +65,18 @@ export const UserContextProvider = (props) => {
     setRefresh(false);
   };
 
+  // handle logging of meal to healthStatsToday
+  const handleLogMeal = (meal) => {
+    const {calories, carbs, protein, fat} = meal;
+    setMealsToday([...mealsToday, meal]);
+    setHealthStatsToday({
+      kcalToday: healthStatsToday.kcalToday + calories,
+      carbsToday: healthStatsToday.carbsToday + carbs,
+      proteinToday: healthStatsToday.proteinToday + protein,
+      fatsToday: healthStatsToday.fatsToday + fat,
+    });
+  };
+
   const value = {
     session,
     user,
@@ -66,6 +86,8 @@ export const UserContextProvider = (props) => {
     healthStatsToday,
     setHealthStatsToday,
     handleSignOut,
+    handleLogMeal,
+    mealsToday,
   };
 
   return <UserContext.Provider value={value} {...props} />;

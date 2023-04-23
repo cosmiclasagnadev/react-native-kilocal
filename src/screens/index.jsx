@@ -5,6 +5,7 @@ import CreateHealthProfile from "./CreateHealthProfile";
 import HomeScreen from "./HomeScreen";
 import SplashScreen from "./SplashScreen";
 import ConfirmStatsScreen from "./ConfirmStatsScreen";
+import AddMealScreen from "./AddMealScreen";
 
 export {
   LoginScreen,
@@ -14,4 +15,5 @@ export {
   ConfirmStatsScreen,
   HomeScreen,
   SplashScreen,
+  AddMealScreen,
 };
