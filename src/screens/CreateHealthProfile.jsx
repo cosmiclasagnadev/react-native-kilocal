@@ -14,6 +14,7 @@ import {
   Select,
   ChevronDownIcon,
   ChevronRightIcon,
+  ChevronLeftIcon,
   Skeleton,
 } from "native-base";
 import {useUser} from "../components/userContextProvider";
@@ -46,7 +47,7 @@ function useDebounce(value, delay) {
 }
 
 const CreateHealthProfile = ({navigation}) => {
-  const {user, healthProfile, setRefresh, isLoading} = useUser();
+  const {isLoading, handleSignOut} = useUser();
   const [height, setHeight] = useState("");
   const [weight, setWeight] = useState("");
   const [gender, setGender] = useState("");
@@ -190,6 +191,17 @@ const CreateHealthProfile = ({navigation}) => {
               endIcon={<ChevronRightIcon color="primary.300" size={3} />}
             >
               Continue
+            </Button>
+            <Button
+              backgroundColor="primary.100"
+              _text={{color: "primary.300", fontWeight: "700"}}
+              _pressed={{bg: "primary.200"}}
+              // width="75%"
+              size="md"
+              onPress={handleSignOut}
+              endIcon={<ChevronLeftIcon color="primary.300" size={3} />}
+            >
+              Back
             </Button>
           </>
         )}
