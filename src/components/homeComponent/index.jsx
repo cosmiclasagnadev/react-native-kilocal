@@ -33,6 +33,7 @@ const HomeComponent = (props) => {
       kcalLimitPerDay,
       weight,
     },
+    healthStatsToday: {kcalToday, carbsToday, proteinToday, fatsToday},
   } = useUser();
 
   return (
@@ -73,51 +74,52 @@ const HomeComponent = (props) => {
             Calories left
           </Heading>
           <Heading size="2xl" mb={3}>
-            1250 <Text fontSize="lg">cal out of {kcalLimitPerDay} cal</Text>
+            {kcalToday}{" "}
+            <Text fontSize="lg">cal out of {kcalLimitPerDay} cal</Text>
           </Heading>
           <Progress
             size="xl"
             bg="primary.100"
             _filledTrack={{bg: "primary.300"}}
-            value={(1250 / kcalLimitPerDay) * 100}
+            value={(kcalToday / kcalLimitPerDay) * 100}
           />
           <Flex flexDirection="row">
             <Box bgColor="primary.200" p={3} rounded="lg" width="33%">
               <Text fontSize="sm">Carbs</Text>
               <Heading size="md" mb={2}>
-                109 <Text>g</Text>
+                {carbsToday} <Text>g</Text>
               </Heading>
               <Progress
                 size="md"
                 bg="primary.100"
                 _filledTrack={{bg: "primary.300"}}
-                value={(109 / macroCarbs) * 100}
+                value={(carbsToday / macroCarbs) * 100}
               />
             </Box>
             <Spacer />
             <Box bgColor="primary.200" p={3} rounded="lg" width="33%">
               <Text fontSize="sm">Protein</Text>
               <Heading size="md" mb={2}>
-                60 <Text>g</Text>
+                {proteinToday} <Text>g</Text>
               </Heading>
               <Progress
                 size="md"
                 bg="primary.100"
                 _filledTrack={{bg: "primary.300"}}
-                value={(60 / macroProtein) * 100}
+                value={(proteinToday / macroProtein) * 100}
               />
             </Box>
             <Spacer />
             <Box bgColor="primary.200" p={3} rounded="lg" width="33%">
               <Text fontSize="sm">Fat</Text>
               <Heading size="md" mb={2}>
-                32 <Text>g</Text>
+                {fatsToday} <Text>g</Text>
               </Heading>
               <Progress
                 size="md"
                 bg="primary.100"
                 _filledTrack={{bg: "primary.300"}}
-                value={(32 / macroFats) * 100}
+                value={(fatsToday / macroFats) * 100}
               />
             </Box>
           </Flex>

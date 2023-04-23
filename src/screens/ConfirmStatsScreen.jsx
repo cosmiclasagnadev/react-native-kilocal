@@ -1,4 +1,4 @@
-import {View} from "react-native";
+import {View, Alert} from "react-native";
 import {supabase} from "../supabase/initSupabase";
 import {useUser} from "../components/userContextProvider";
 import {computeTERAndMacro} from "../helpers";
@@ -23,7 +23,7 @@ const ConfirmStatsScreen = ({route}) => {
     formattedIdealWeightString,
   } = route.params;
 
-  const {user, healthProfile, setRefresh, isLoading} = useUser();
+  const {user, healthProfile, setRefresh, setHealthStatsToday} = useUser();
 
   const handleCreateHealthProfile = async () => {
     const {finalTER, finalCarbs, finalProtein, finalFat} = computeTERAndMacro(
@@ -52,6 +52,12 @@ const ConfirmStatsScreen = ({route}) => {
     if (error) {
       Alert.alert(error.message);
     }
+    setHealthStatsToday({
+      kcalToday: 0,
+      carbsToday: 0,
+      proteinToday: 0,
+      fatsToday: 0,
+    });
     setRefresh(true);
   };
 

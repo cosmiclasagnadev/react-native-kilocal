@@ -13,6 +13,7 @@ export const UserContextProvider = (props) => {
   const [healthProfile, setHealthProfile] = React.useState(null);
   const [refreshFromCreateProfileScreen, setRefresh] = React.useState(false);
   const [isLoading, setIsLoading] = React.useState(false);
+  const [healthStatsToday, setHealthStatsToday] = React.useState(null);
 
   useEffect(() => {
     setIsLoading(true);
@@ -50,12 +51,21 @@ export const UserContextProvider = (props) => {
     fetchHealthProfile();
   }, [session, refreshFromCreateProfileScreen]);
 
+  const handleSignOut = async () => {
+    const {error} = await supabase.auth.signOut();
+    if (error) Alert.alert(error.message);
+    setRefresh(false);
+  };
+
   const value = {
     session,
     user,
     healthProfile,
     setRefresh,
     isLoading,
+    healthStatsToday,
+    setHealthStatsToday,
+    handleSignOut,
   };
 
   return <UserContext.Provider value={value} {...props} />;

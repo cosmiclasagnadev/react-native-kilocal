@@ -44,13 +44,8 @@ const renderNav = (props) => {
 };
 
 const HomeScreen = () => {
-  const {user, setRefresh, session} = useUser();
+  const {user, setRefresh, session, handleSignOut} = useUser();
   const [selected, setSelected] = React.useState(0);
-  const handleSignOut = async () => {
-    const {error} = await supabase.auth.signOut();
-    if (error) Alert.alert(error.message);
-    setRefresh(false);
-  };
 
   return (
     <>
