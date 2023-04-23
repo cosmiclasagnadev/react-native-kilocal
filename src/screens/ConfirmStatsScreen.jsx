@@ -1,4 +1,7 @@
 import {View} from "react-native";
+import {supabase} from "../supabase/initSupabase";
+import {useUser} from "../components/userContextProvider";
+import {computeTERAndMacro} from "../helpers";
 import {
   Box,
   Heading,
@@ -13,12 +16,45 @@ const ConfirmStatsScreen = ({route}) => {
   const {
     height,
     weight,
+    gender,
     lifestyle,
     idealWeight,
     userGoalWeight,
     formattedIdealWeightString,
-    handleCreateHealthProfile,
   } = route.params;
+
+  const {user, healthProfile, setRefresh, isLoading} = useUser();
+
+  const handleCreateHealthProfile = async () => {
+    const {finalTER, finalCarbs, finalProtein, finalFat} = computeTERAndMacro(
+      height,
+      weight,
+      gender,
+      lifestyle
+    );
+    const {error, data} = await supabase
+      .from("healthProfiles")
+      .insert([
+        {
+          user_id: user.id,
+          height,
+          weight,
+          gender,
+          physicalActivity: lifestyle,
+          goalWeight: userGoalWeight,
+          kcalLimitPerDay: finalTER,
+          macroCarbs: finalCarbs,
+          macroProtein: finalProtein,
+          macroFats: finalFat,
+        },
+      ])
+      .select();
+    if (error) {
+      Alert.alert(error.message);
+    }
+    setRefresh(true);
+  };
+
   return (
     <Box
       flex={1}
@@ -40,6 +76,9 @@ const ConfirmStatsScreen = ({route}) => {
         </Text>
         <Text fontWeight={700} color="white" fontSize="2xl">
           Weight: {weight}
+        </Text>
+        <Text fontWeight={700} color="white" fontSize="2xl">
+          Biological sex: {gender}
         </Text>
         <Text
           fontWeight={700}

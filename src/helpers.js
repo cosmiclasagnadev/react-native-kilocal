@@ -43,3 +43,72 @@ export const authFunction = async (type, email, password) => {
   if (error) Alert.alert(error.message);
   setLoading("");
 };
+
+export const computeTERAndMacro = (height, weight, gender, lifestyle) => {
+  let multiplier;
+  switch (lifestyle) {
+    case "Sedentary":
+      {
+        multiplier = 30;
+      }
+      break;
+    case "Light":
+      {
+        multiplier = 35;
+      }
+      break;
+    case "Moderate":
+      {
+        multiplier = 40;
+      }
+      break;
+    case "Active": {
+      multiplier = 45;
+    }
+  }
+
+  // ignore prettier here
+  // prettier-ignore
+  const BMR = (9.99 * weight) + (6.25 * height) - (4.92 * multiplier);
+  const genderFactoredInBMR = gender === "Male" ? BMR + 5 : BMR - 161;
+  // round to nearest 50;
+
+  const quotient = Math.round(genderFactoredInBMR / 50);
+  const finalBMR = quotient * 50;
+
+  // get User's TER
+  let PAMultiplier;
+  switch (lifestyle) {
+    case "Sedentary":
+      {
+        PAMultiplier = 1.3;
+      }
+      break;
+    case "Light":
+      {
+        PAMultiplier = gender === "Male" ? 1.58 : 1.45;
+      }
+      break;
+    case "Moderate":
+      {
+        PAMultiplier = gender === "Male" ? 1.67 : 1.55;
+      }
+      break;
+    case "Active": {
+      PAMultiplier = gender === "Male" ? 1.88 : 1.75;
+    }
+  }
+  const TER = finalBMR * PAMultiplier;
+  const TERQuotient = Math.round(TER / 50);
+  const finalTER = TERQuotient * 50;
+
+  const carbs = finalTER * 0.65;
+  const protein = finalTER * 0.15;
+  const fat = finalTER * 0.2;
+
+  const finalCarbs = (carbs / 4).toFixed(0);
+  const finalProtein = (protein / 4).toFixed(0);
+  const finalFat = (fat / 9).toFixed(0);
+
+  return {finalTER, finalCarbs, finalProtein, finalFat};
+};
