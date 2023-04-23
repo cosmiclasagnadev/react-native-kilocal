@@ -45,10 +45,11 @@ function useDebounce(value, delay) {
   return debouncedValue;
 }
 
-const CreateHealthProfile = () => {
+const CreateHealthProfile = ({navigation}) => {
   const {user, healthProfile, setRefresh, isLoading} = useUser();
   const [height, setHeight] = useState("");
   const [weight, setWeight] = useState("");
+  const [gender, setGender] = useState("");
   const [lifestyle, setLifestyle] = useState("");
   const [idealWeight, setIdealWeight] = useState("");
   const [formattedIdealWeightString, setFormattedIdealWeightString] =
@@ -67,29 +68,22 @@ const CreateHealthProfile = () => {
     }
   }, [debouncedHeightInput]);
 
-  const handleCreateHealthProfile = async () => {
-    const {error, data} = await supabase
-      .from("healthProfiles")
-      .insert([
-        {
-          user_id: user.id,
-          height,
-          weight,
-          physicalActivity: lifestyle,
-          goalWeight: userGoalWeight,
-        },
-      ])
-      .select();
-    if (error) {
-      Alert.alert(error.message);
-    }
-    setRefresh(true);
+  const proceedToConfirm = () => {
+    navigation.navigate("ConfirmStatsScreen", {
+      height,
+      weight,
+      gender,
+      lifestyle,
+      idealWeight,
+      userGoalWeight,
+      formattedIdealWeightString,
+    });
   };
 
   return (
     <Box
       flex={1}
-      justifyContent="start"
+      justifyContent="center"
       alignItems="start"
       bgColor="primary.300"
       px="5"
@@ -131,6 +125,21 @@ const CreateHealthProfile = () => {
                 />
               </Stack>
               <Stack>
+                <FormControl.Label>Weight</FormControl.Label>
+                <Select
+                  size="lg"
+                  placeholder="Biological sex"
+                  dropdownIcon={
+                    <ChevronDownIcon size={3} m={2} color="white" />
+                  }
+                  onValueChange={(itemValue) => setGender(itemValue)}
+                  required
+                >
+                  <Select.Item label="Male" value="Male" />
+                  <Select.Item label="Female" value="Female" />
+                </Select>
+              </Stack>
+              <Stack>
                 <FormControl.Label>Describe your lifestyle</FormControl.Label>
                 <Select
                   size="lg"
@@ -141,10 +150,10 @@ const CreateHealthProfile = () => {
                   onValueChange={(itemValue) => setLifestyle(itemValue)}
                   required
                 >
-                  <Select.Item label="Sedentary" value="sedentary" />
-                  <Select.Item label="Light" value="light" />
-                  <Select.Item label="Moderate" value="moderate" />
-                  <Select.Item label="Very Active" value="active" />
+                  <Select.Item label="Sedentary" value="Sedentary" />
+                  <Select.Item label="Light" value="Light" />
+                  <Select.Item label="Moderate" value="Moderate" />
+                  <Select.Item label="Very Active" value="Active" />
                 </Select>
               </Stack>
               {height > 60 && height < 245 && (
@@ -176,22 +185,12 @@ const CreateHealthProfile = () => {
               size="md"
               mt={5}
               onPress={() => {
-                handleCreateHealthProfile();
+                proceedToConfirm();
               }}
               endIcon={<ChevronRightIcon color="primary.300" size={3} />}
             >
               Continue
             </Button>
-            {/* <Button
-          backgroundColor="primary.100"
-          _text={{color: "primary.300", fontWeight: "700"}}
-          _pressed={{bg: "primary.200"}}
-          width="75%"
-          size="md"
-          onPress={handleSignOut}
-        >
-          Sign Out
-        </Button> */}
           </>
         )}
       </VStack>

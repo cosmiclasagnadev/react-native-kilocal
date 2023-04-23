@@ -14,6 +14,7 @@ import {
   Image,
 } from "native-base";
 import {AntDesign, Entypo} from "@expo/vector-icons";
+import {useUser} from "../userContextProvider";
 
 const truncateLongText = (text, length) => {
   if (text.length > length) {
@@ -24,6 +25,16 @@ const truncateLongText = (text, length) => {
 
 const HomeComponent = (props) => {
   const {handleSignOut} = props;
+  const {
+    healthProfile: {
+      macroProtein,
+      macroCarbs,
+      macroFats,
+      kcalLimitPerDay,
+      weight,
+    },
+  } = useUser();
+
   return (
     <Box flex={1} justifyContent="start" bgColor="primary.300" safeArea>
       <VStack width="100%" space="2.5" mt="4" px={5}>
@@ -53,7 +64,7 @@ const HomeComponent = (props) => {
               Hi, Allen!
             </Text>
             <Text fontSize="md" style={{color: "white"}} fontWeight={400}>
-              Your current weight is 67kg
+              Your current weight is {weight}kg
             </Text>
           </VStack>
         </Flex>
@@ -62,25 +73,25 @@ const HomeComponent = (props) => {
             Calories left
           </Heading>
           <Heading size="2xl" mb={3}>
-            1650 <Text fontSize="lg">cal</Text>
+            1250 <Text fontSize="lg">cal out of {kcalLimitPerDay} cal</Text>
           </Heading>
           <Progress
             size="xl"
             bg="primary.100"
             _filledTrack={{bg: "primary.300"}}
-            value={76}
+            value={(1250 / kcalLimitPerDay) * 100}
           />
           <Flex flexDirection="row">
             <Box bgColor="primary.200" p={3} rounded="lg" width="33%">
               <Text fontSize="sm">Carbs</Text>
               <Heading size="md" mb={2}>
-                150 <Text>g</Text>
+                109 <Text>g</Text>
               </Heading>
               <Progress
                 size="md"
                 bg="primary.100"
                 _filledTrack={{bg: "primary.300"}}
-                value={80}
+                value={(109 / macroCarbs) * 100}
               />
             </Box>
             <Spacer />
@@ -93,7 +104,7 @@ const HomeComponent = (props) => {
                 size="md"
                 bg="primary.100"
                 _filledTrack={{bg: "primary.300"}}
-                value={66}
+                value={(60 / macroProtein) * 100}
               />
             </Box>
             <Spacer />
@@ -106,7 +117,7 @@ const HomeComponent = (props) => {
                 size="md"
                 bg="primary.100"
                 _filledTrack={{bg: "primary.300"}}
-                value={26}
+                value={(32 / macroFats) * 100}
               />
             </Box>
           </Flex>
